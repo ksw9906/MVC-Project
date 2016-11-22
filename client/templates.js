@@ -78,6 +78,8 @@ const init = () =>{
       thumbnail.src = imgData;
       thumbnailCtx.drawImage(thumbnail,0,0,width,height);
     }    
+  } else{
+    $("#templateAlert").css("display","block");
   }
 };
 

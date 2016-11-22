@@ -11,10 +11,10 @@ var DEFAULT_FILL_STYLE = "blue";
 
 //Default draws
 var draws = {
-  3:{shape:'rect',x:190,y:202,w:290,h:97,fill:'white',stroke:'red', line:3},
-  2:{shape:'rect',x:150,y:170,w:370,h:160,fill:'white',stroke:'orange', line:3},
-  1:{shape:'rect',x:122,y:150,w:428,h:201,fill:'white',stroke:'yellow', line:3},
-  4:{shape:'rect',x:231,y:230,w:209,h:40,fill:'white',stroke:'green', line:3},
+//  3:{shape:'rect',x:190,y:202,w:290,h:97,fill:'white',stroke:'red', line:3},
+//  2:{shape:'rect',x:150,y:170,w:370,h:160,fill:'white',stroke:'orange', line:3},
+//  1:{shape:'rect',x:122,y:150,w:428,h:201,fill:'white',stroke:'yellow', line:3},
+//  4:{shape:'rect',x:231,y:230,w:209,h:40,fill:'white',stroke:'green', line:3},
 };
 
 // FUNCTIONS
@@ -153,6 +153,12 @@ function init(){
       }
     }
     draw();
+  
+    if(Object.keys(draws).length === 0){
+      $("#fillAlert").css("display","block");
+      $("#fillAlert").css("z-index","1");
+      $("#fillAlert").css("position","relative");   
+    }
     
 
     setColorEvents();
