@@ -1,14 +1,4 @@
 <html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <title>DomoMaker</title>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <link rel="shortcut icon" href="/assets/img/favicon.png"/>
-  <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
-  <script type="application/javascript" src="/assets/css/jquery-3.1.1.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://bootswatch.com/readable/bootstrap.min.css"/>
-  <script type="application/javascript" src="assets/css/bootstrap.min.js"></script>
-</head>
 <body>
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -19,7 +9,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Kelsey Weinman</a>
+        <a class="navbar-brand" href="/">Vibrancy</a>
       </div>
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
@@ -30,6 +20,11 @@
       </div>
     </div>
   </nav>
+  
+  <div id="signinAlert" class="alert alert-dismissible alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <p id="errorMessage"></p>
+  </div> 
   
   <section id="signup">
     <form id="signupForm" name="signupForm" action="/signup" method="POST" class="mainForm">
@@ -42,9 +37,6 @@
       <input type="hidden" name="_csrf" value={{csrfToken}} /><a id="signupSubmit" href="#" class="btn btn-primary">Sign up</a>
     </form>
   </section>
-  <div id="domoMessage"><img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-    <h3><span id="errorMessage"></span></h3><img id="domo" src="assets/img/domo.png" alt="domo"/>
-  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script src="/assets/client.js" type="text/babel"></script>
 </body>

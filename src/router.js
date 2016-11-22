@@ -6,16 +6,12 @@ const router = (app) => {
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
   app.get('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signupPage);
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
-  app.get('/logout', mid.requiresLogin, controllers.Account.logout);
-  app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
-  app.post('/maker', mid.requiresLogin, controllers.Domo.make);
-  app.post('/remove', controllers.Domo.removeDomo);
-  
+  app.get('/logout', mid.requiresLogin, controllers.Account.logout);  
   app.get('/fill', mid.requiresLogin, controllers.Fill.fillPage);
   app.get('/outline', mid.requiresLogin, controllers.Fill.outlinePage);
   app.post('/save', mid.requiresLogin, controllers.Fill.save);
   app.get('/templates',  mid.requiresLogin, controllers.Fill.templatesPage);
-  app.post('/select', mid.requiresLogin, controllers.Fill.select);
+  app.get('/fill/:id', mid.requiresLogin, controllers.Fill.select);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 

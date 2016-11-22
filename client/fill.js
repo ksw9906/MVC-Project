@@ -9,7 +9,7 @@ var rectX,rectY,rectW,rectH,circX,circY,circRad;
 // CONSTANTS
 var DEFAULT_FILL_STYLE = "blue";
 
-
+//Default draws
 var draws = {
   3:{shape:'rect',x:190,y:202,w:290,h:97,fill:'white',stroke:'red', line:3},
   2:{shape:'rect',x:150,y:170,w:370,h:160,fill:'white',stroke:'orange', line:3},
@@ -20,7 +20,7 @@ var draws = {
 // FUNCTIONS
 const draw = () => {
   topCtx.globalAlpha = 1;
-  doClear();
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   var keys = Object.keys(draws);
   
   for(var i = 0; i < keys.length; i++){
@@ -39,16 +39,13 @@ const draw = () => {
       topCtx.beginPath();
       topCtx.arc(drawCall.x,drawCall.y,drawCall.rad,0,Math.PI * 2,false);
       topCtx.closePath();
-//      topCtx.fill();
+      topCtx.fill();
       topCtx.stroke();
     }
-
-
     
     ctx.drawImage(topCavas,0,0);
     clearTopCanvas();    
   }
-  console.log(draws);
 }
 
 const inShape = (mouse) => {
@@ -62,6 +59,11 @@ const inShape = (mouse) => {
           shapes.push(draws[keys[i]]);
         }
       } 
+    } else if(shape.shape === 'circle'){
+      var distance = Math.sqrt(Math.pow((mouse.x - shape.x),2) + Math.pow((mouse.y - shape.y),2));
+      if(distance < shape.rad){
+        shapes.push(draws[keys[i]]);
+      }
     }
   }
   return shapes;
@@ -70,8 +72,26 @@ const inShape = (mouse) => {
 const smallestArea = (shapes) => {
   var smallest = shapes[0];
   for(var i = 1; i < shapes.length; i++){
-    if((smallest.w * smallest.h) > (shapes[i].w + shapes[i].h)){
-      smallest = shapes[i];
+    if(shapes[i].shape === "rect"){
+      if(smallest.shape === "rect"){
+        if((smallest.w * smallest.h) > (shapes[i].w * shapes[i].h)){
+          smallest = shapes[i];
+        }
+      } else if(smallest.shape == "circle"){
+        if((Math.PI * Math.pow(smallest.rad,2)) > (shapes[i].w * shapes[i].h)){
+          smallest = shapes[i];
+        }
+      }
+    } else if(shapes[i].shape === "circle"){
+      if(smallest.shape === "circle"){
+        if((Math.PI * Math.pow(smallest.rad,2)) > (Math.PI * Math.pow(shapes[i].rad,2))){
+          smallest = shapes[i];
+        }
+      } else if(smallest.shape === "rect"){
+        if((smallest.w * smallest.h) > (Math.PI * Math.pow(shapes[i].rad,2))){
+          smallest = shapes[i];
+        }
+      }      
     }
   }
   return smallest;
@@ -112,13 +132,34 @@ function init(){
   
     // Hook up event listeners
     topCavas.onmousedown = doMousedown;
+  
+    var drawsArray = document.getElementById("calls").children;
+    if(drawsArray.length > 0){
+      draws = {};
+      for(var i = 0; i < drawsArray.length; i++){
+        draws[i] = {};
+        draws[i]["shape"] = drawsArray[i].children[0].innerHTML;
+        draws[i]["x"] = parseInt(drawsArray[i].children[1].innerHTML);
+        draws[i]["y"] = parseInt(drawsArray[i].children[2].innerHTML);
+        draws[i]["stroke"] = drawsArray[i].children[6].innerHTML;
+        draws[i]["line"] = parseInt(drawsArray[i].children[7].innerHTML);
+        draws[i]["fill"] = "white";
+        if(draws[i]["shape"] === "rect"){
+          draws[i]["w"] = parseInt(drawsArray[i].children[3].innerHTML);
+          draws[i]["h"] = parseInt(drawsArray[i].children[4].innerHTML);        
+        } else{
+          draws[i]["rad"] = parseInt(drawsArray[i].children[5].innerHTML);
+        }
+      }
+    }
+    draw();
+    
 
     setColorEvents();
 
-//    document.querySelector("#clearButton").onclick = function(){
-//      draws = {};
-//      doClear();
-//    };
+    document.querySelector("#clearButton").onclick = function(){
+      doClear();
+    };
     document.querySelector("#exportButton").onclick = doExport;
 //    document.querySelector("#undoButton").onclick = function(){
 //      var keys = Object.keys(draws);
@@ -127,8 +168,6 @@ function init(){
 //        draw();
 //      }
 //    }
-    
-    draw();
 }
 
 
@@ -136,16 +175,15 @@ function init(){
 function doMousedown(e){
     var shapes = inShape(getMouse(e));
     if(shapes.length == 0){
-      console.log('none');
+      canvas.style.background = fillStyle;
     }else if(shapes.length == 1){
       shapes[0].fill = fillStyle;
-      draw();
     }else if(shapes.length > 1){
       var shape = smallestArea(shapes);
       console.log(shape);
       shape.fill = fillStyle;
-      draw();
     }	
+    draw();
 }
 
 function clearTopCanvas () {
@@ -153,8 +191,15 @@ function clearTopCanvas () {
 }
 
 function doClear(){
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-//    drawGrid(ctx,'lightgray', 10, 10);
+  var keys = Object.keys(draws);
+  
+  for(var i = 0; i < keys.length; i++){
+    const drawCall = draws[keys[i]];
+    drawCall.fill = "white";
+  }
+  
+  canvas.style.background = "white";
+  draw();
 }
 
 function doExport(){

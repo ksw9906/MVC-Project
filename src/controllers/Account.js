@@ -33,7 +33,7 @@ const login = (request, response) => {
 
     req.session.account = Account.AccountModel.toAPI(account);
 
-    return res.json({ redirect: '/maker' });
+    return res.json({ redirect: '/outline' });
   });
 };
 
@@ -66,7 +66,7 @@ const signup = (request, response) => {
 
       req.session.account = Account.AccountModel.toAPI(newAccount);
 
-      return res.json({ redirect: '/maker' });
+      return res.json({ redirect: '/outline' });
     });
   });
 };

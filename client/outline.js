@@ -18,19 +18,21 @@ var draws = [];
 const draw = () => {
   topCtx.globalAlpha = 1;
   doClear();
-//  var keys = Object.keys(draws);
   
   for(var i = 0; i < draws.length; i++){
     const drawCall = draws[i];
     topCtx.strokeStyle = drawCall.stroke;
     topCtx.lineWidth = drawCall.line;
+    topCtx.fillStyle = "white";
     
     if(drawCall.shape === 'rect'){
-      topCtx.strokeRect(drawCall.x,drawCall.y,drawCall.w,drawCall.h);      
+      topCtx.strokeRect(drawCall.x,drawCall.y,drawCall.w,drawCall.h); 
+      topCtx.fillRect(drawCall.x, drawCall.y,drawCall.w,drawCall.h);
     } else if(drawCall.shape === 'circle'){
       topCtx.beginPath();
       topCtx.arc(drawCall.x,drawCall.y,drawCall.rad,0,Math.PI * 2,false);
       topCtx.closePath();
+      topCtx.fill();
       topCtx.stroke();
     }
 
@@ -102,16 +104,13 @@ function init(){
     }
 
     document.querySelector("#clearButton").onclick = function(){
-      draws = {};
+      draws = [];
       doClear();
     };
     document.querySelector("#saveButton").onclick = doSave;
     document.querySelector("#undoButton").onclick = function(){
-      var keys = Object.keys(draws);
-      if(keys.length > 0){
-        delete draws[keys[keys.length-1]];
-        draw();
-      }
+      draws.pop();
+      draw();
     }
 }
 

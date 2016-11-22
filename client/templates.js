@@ -5,13 +5,16 @@ const draw = (draws, ctx) => {
     const drawCall = draws[i];
     ctx.strokeStyle = drawCall.stroke;
     ctx.lineWidth = drawCall.line;
+    ctx.fillStyle = "white";
     
     if(drawCall.shape === 'rect'){
-      ctx.strokeRect(drawCall.x,drawCall.y,drawCall.w,drawCall.h);      
+      ctx.strokeRect(drawCall.x,drawCall.y,drawCall.w,drawCall.h); 
+      ctx.fillRect(drawCall.x, drawCall.y,drawCall.w,drawCall.h);
     } else if(drawCall.shape === 'circle'){
       ctx.beginPath();
       ctx.arc(drawCall.x,drawCall.y,drawCall.rad,0,Math.PI * 2,false);
       ctx.closePath();
+      ctx.fill();
       ctx.stroke();
     }
 
@@ -63,20 +66,8 @@ const init = () =>{
         var target = $(e.target);
         var token = document.getElementById("templates").children[0].id;
         var id = target[0].id;
-        var data = {id: id, _csrf: token,};
-        $.ajax({
-            cache: false,
-            type: "POST",
-            url: "/select",
-            data: data,
-            dataType: "json",
-            success: (result, status, xhr) => {
-//              window.location = result.redirect;
-            },
-            error: (xhr, status, error) => {
-              console.log(error);
-            }
-        });         
+        var url = "/fill/" + id;
+        window.location = url;        
       }
       canvases.appendChild(canvas);
       var thumbnailCtx = canvas.getContext('2d');    

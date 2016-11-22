@@ -2,11 +2,11 @@ const models = require('../models');
 const mongoose = require('mongoose');
 
 const fillPage = (req, res) => {
-  res.render('fill', { csrfToken: req.csrfToken(), layout: false });
+  res.render('fill', { csrfToken: req.csrfToken()});
 };
 
 const outlinePage = (req, res) => {
-  res.render('outline', { csrfToken: req.csrfToken(), layout: false });
+  res.render('outline', { csrfToken: req.csrfToken()});
 };
 
 const Draw = models.Draw;
@@ -62,18 +62,14 @@ const selectDraw = (req, res) => {
   const convertId = mongoose.Types.ObjectId;
   
   Draw.DrawModel.find({
-    _id: req.body.id,
+    _id: req.params.id,
   }).select("calls").exec((err, docs) =>{
     if(err) {
       console.log(err);
       return res.status(400).json({error: 'An error occured'});
     }
-    
-    console.log(docs);
-//    return res.json({redirect: '/templates'});
-    return res.render('fill', {draws: docs, csrfToken: req.csrfToken(), layout: false }, (err, html) => {
+    return res.render('fill', {draws: docs, csrfToken: req.csrfToken()}, (err, html) => {
       if(err){console.log(err);}
-      console.log(html);
       res.status(200).send(html);
     });
   });
